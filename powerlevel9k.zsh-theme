@@ -1584,13 +1584,82 @@ powerlevel9k_vcs_init() {
 
 ################################################################
 # Segment to show VCS information
-prompt_vcs() {
-  VCS_WORKDIR_DIRTY=false
-  VCS_WORKDIR_HALF_DIRTY=false
-  local current_state=""
 
-  # Actually invoke vcs_info manually to gather all information.
-  vcs_info
+prompt_vcs_async_request() {
+  zmodload zsh/system 2>/dev/null # For `$sysparams`
+
+  typeset -g _PROMPT_VCS_ASYNC_FD _PROMPT_VCS_CHILD_PID
+
+  # If we've got a pending request, cancel it
+  if [[ -n "$_PROMPT_VCS_ASYNC_FD" ]] && { true <&$_PROMPT_VCS_ASYNC_FD } 2>/dev/null; then
+    # Close the file descriptor and remove the handler
+    exec {_PROMPT_VCS_ASYNC_FD}<&-
+    zle -F $_PROMPT_VCS_ASYNC_FD
+
+    # We won't know the pid unless the user has zsh/system module installed
+    if [[ -n "$_PROMPT_VCS_CHILD_PID" ]]; then
+      # Zsh will make a new process group for the child process only if job
+      # control is enabled (MONITOR option)
+      if [[ -o MONITOR ]]; then
+        # Send the signal to the process group to kill any processes that may
+        # have been forked by the suggestion strategy
+        kill -TERM -$_PROMPT_VCS_CHILD_PID 2>/dev/null
+      else
+        # Kill just the child process since it wasn't placed in a new process
+        # group. If the suggestion strategy forked any child processes they may
+        # be orphaned and left behind.
+        kill -TERM $_PROMPT_VCS_CHILD_PID 2>/dev/null
+      fi
+    fi
+  fi
+
+  # Fork a process to fetch a suggestion and open a pipe to read from it
+  exec {_PROMPT_VCS_ASYNC_FD}< <(
+    # Tell parent process our pid
+    echo $sysparams[pid]
+
+    local VCS_WORKDIR_DIRTY=false
+    local VCS_WORKDIR_HALF_DIRTY=false
+    vcs_info
+
+    echo -E "${VCS_WORKDIR_DIRTY}"
+    echo -E "${VCS_WORKDIR_HALF_DIRTY}"
+    echo -E "${vcs_visual_identifier}"
+    echo -En "${vcs_info_msg_0_}"
+  )
+
+  # There's a weird bug here where ^C stops working unless we force a fork
+  # See https://github.com/zsh-users/zsh-autosuggestions/issues/364
+  command true
+
+  # Read the pid from the child process
+  read _PROMPT_VCS_CHILD_PID <&$_PROMPT_VCS_ASYNC_FD
+
+  # When the fd is readable, call the response handler
+  zle -F "$_PROMPT_VCS_ASYNC_FD" prompt_vcs_async_response
+}
+
+prompt_vcs_async_response() {
+  emulate -L zsh
+
+  if [[ -z "$2" || "$2" == "hup" ]]; then
+    read -u $1 VCS_WORKDIR_DIRTY
+    read -u $1 VCS_WORKDIR_HALF_DIRTY
+    read -u $1 vcs_visual_identifier
+    IFS='' read -rd '' -u $1 vcs_info_msg_0_
+
+    # Close the fd
+    exec {1}<&-
+  fi
+
+  # Always remove the handler
+  zle -F "$1"
+
+  zle reset-prompt
+}
+
+prompt_vcs() {
+  local current_state=""
   local vcs_prompt="${vcs_info_msg_0_}"
 
   if [[ -n "$vcs_prompt" ]]; then
@@ -1853,6 +1922,12 @@ local NEWLINE='
 
   # Allow iTerm integration to work
   [[ $ITERM_SHELL_INTEGRATION_INSTALLED == "Yes" ]] && PROMPT="%{$(iterm2_prompt_mark)%}$PROMPT"
+
+  prompt_vcs_async_request
+}
+
+powerlevel9k_chpwd() {
+  vcs_info_msg_0_=
 }
 
 zle-keymap-select () {
@@ -1926,6 +2001,7 @@ prompt_powerlevel9k_setup() {
   # prepare prompts
   add-zsh-hook precmd powerlevel9k_prepare_prompts
   add-zsh-hook preexec powerlevel9k_preexec
+  add-zsh-hook chpwd powerlevel9k_chpwd
 
   zle -N zle-keymap-select
 }
@@ -1933,6 +2009,7 @@ prompt_powerlevel9k_setup() {
 prompt_powerlevel9k_teardown() {
   add-zsh-hook -D precmd powerlevel9k_\*
   add-zsh-hook -D preexec powerlevel9k_\*
+  add-zsh-hook -D chpwd powerlevel9k_\*
   PROMPT='%m%# '
   RPROMPT=
 }

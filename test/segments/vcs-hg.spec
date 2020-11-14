@@ -40,6 +40,9 @@ function testColorOverridingForCleanStateWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
+
   assertEquals "%K{007} %F{006} default %k%F{007}%f " "$(build_left_prompt)"
 }
 
@@ -56,6 +59,9 @@ function testColorOverridingForModifiedStateWorks() {
 
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
+
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
 
   assertEquals "%K{003} %F{001} default ● %k%F{003}%f " "$(build_left_prompt)"
 }
@@ -74,6 +80,9 @@ function testAddedFilesIconWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
+
   assertEquals "%K{003} %F{000} default ● %k%F{003}%f " "$(build_left_prompt)"
 }
 
@@ -91,6 +100,9 @@ function testTagIconWorks() {
 
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
+
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
 
   assertEquals "%K{002} %F{000} default Tv0.0.1 %k%F{002}%f " "$(build_left_prompt)"
 }
@@ -113,6 +125,9 @@ function testTagIconInDetachedHeadState() {
 
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
+
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
 
   assertEquals "%K{002} %F{000} ${hash} Tv0.0.1 %k%F{002}%f " "$(build_left_prompt)"
 }
@@ -137,6 +152,9 @@ function testActionHintWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
+
   assertEquals "%K{003} %F{000} default %F{red}| merging%f %k%F{003}%f " "$(build_left_prompt)"
 }
 
@@ -158,6 +176,9 @@ function testShorteningCommitHashWorks() {
   # the changeset is truncated.
   powerlevel9k_vcs_init
 
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
+
   assertEquals "%K{002} %F{000}${hash}  default %k%F{002}%f " "$(build_left_prompt)"
 }
 
@@ -178,6 +199,9 @@ function testShorteningCommitHashIsNotShownIfShowChangesetIsFalse() {
   # the changeset is truncated.
   powerlevel9k_vcs_init
 
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
+
   assertEquals "%K{002} %F{000} default %k%F{002}%f " "$(build_left_prompt)"
 }
 
@@ -188,6 +212,9 @@ function testMercurialIconWorks() {
 
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
+
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
 
   assertEquals "%K{002} %F{000}HG-Icon %F{000} default %k%F{002}%f " "$(build_left_prompt)"
 }
@@ -201,6 +228,9 @@ function testBookmarkIconWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
+
   assertEquals "%K{002} %F{000} default Binitial %k%F{002}%f " "$(build_left_prompt)"
 }
 
@@ -213,6 +243,9 @@ function testBranchNameScriptingVulnerability() {
   hg branch '$(./evil_script.sh)' >/dev/null
   hg add . >/dev/null
   hg commit -m "Initial commit" >/dev/null
+
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
 
   assertEquals '%K{002} %F{000} $(./evil_script.sh) %k%F{002}%f ' "$(build_left_prompt)"
 }

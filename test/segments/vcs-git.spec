@@ -76,6 +76,9 @@ function testColorOverridingForCleanStateWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
+
   assertEquals "%K{007} %F{006} master %k%F{007}%f " "$(build_left_prompt)"
 }
 
@@ -93,6 +96,9 @@ function testColorOverridingForModifiedStateWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
+
   assertEquals "%K{003} %F{001} master ● %k%F{003}%f " "$(build_left_prompt)"
 }
 
@@ -107,6 +113,9 @@ function testColorOverridingForUntrackedStateWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
+
   assertEquals "%K{003} %F{006} master ? %k%F{003}%f " "$(build_left_prompt)"
 }
 
@@ -116,6 +125,9 @@ function testGitIconWorks() {
 
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
+
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
 
   assertEquals "%K{002} %F{000}Git-Icon %F{000} master %k%F{002}%f " "$(build_left_prompt)"
 }
@@ -132,6 +144,9 @@ function testGitlabIconWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
+
   assertEquals "%K{002} %F{000}GL-Icon %F{000} master %k%F{002}%f " "$(build_left_prompt)"
 }
 
@@ -146,6 +161,9 @@ function testBitbucketIconWorks() {
 
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
+
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
 
   assertEquals "%K{002} %F{000}BB-Icon %F{000} master %k%F{002}%f " "$(build_left_prompt)"
 }
@@ -162,6 +180,9 @@ function testGitHubIconWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
+
   assertEquals "%K{002} %F{000}GH-Icon %F{000} master %k%F{002}%f " "$(build_left_prompt)"
 }
 
@@ -175,6 +196,9 @@ function testUntrackedFilesIconWorks() {
 
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
+
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
 
   assertEquals "%K{002} %F{000} master ? %k%F{002}%f " "$(build_left_prompt)"
 }
@@ -194,6 +218,9 @@ function testStagedFilesIconWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
+
   assertEquals "%K{003} %F{000} master + %k%F{003}%f " "$(build_left_prompt)"
 }
 
@@ -210,6 +237,9 @@ function testUnstagedFilesIconWorks() {
 
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
+
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
 
   assertEquals "%K{003} %F{000} master M %k%F{003}%f " "$(build_left_prompt)"
 }
@@ -229,6 +259,9 @@ function testStashIconWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
+
   assertEquals "%K{002} %F{000} master S1 %k%F{002}%f " "$(build_left_prompt)"
 }
 
@@ -244,6 +277,9 @@ function testTagIconWorks() {
 
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
+
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
 
   assertEquals "%K{002} %F{000} master Tv0.0.1 %k%F{002}%f " "$(build_left_prompt)"
 }
@@ -265,6 +301,9 @@ function testTagIconInDetachedHeadState() {
 
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
+
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
 
   assertEquals "%K{002} %F{000} ${hash} Tv0.0.1 %k%F{002}%f " "$(build_left_prompt)"
 }
@@ -289,6 +328,9 @@ function testActionHintWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
+
   assertEquals "%K{003} %F{000} master %F{red}| merge%f %k%F{003}%f " "$(build_left_prompt)"
 }
 
@@ -310,6 +352,9 @@ function testIncomingHintWorks() {
 
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
+
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
 
   assertEquals "%K{002} %F{000} master I1 %k%F{002}%f " "$(build_left_prompt)"
 }
@@ -333,6 +378,9 @@ function testOutgoingHintWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
+
   assertEquals "%K{002} %F{000} master o1 %k%F{002}%f " "$(build_left_prompt)"
 }
 
@@ -353,6 +401,10 @@ function testShorteningCommitHashWorks() {
   # This test needs to call powerlevel9k_vcs_init, where
   # the changeset is truncated.
   powerlevel9k_vcs_init
+
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
+
   assertEquals "%K{002} %F{000}${hash}  master %k%F{002}%f " "$(build_left_prompt)"
 }
 
@@ -372,6 +424,10 @@ function testShorteningCommitHashIsNotShownIfShowChangesetIsFalse() {
   # This test needs to call powerlevel9k_vcs_init, where
   # the changeset is truncated.
   powerlevel9k_vcs_init
+
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
+
   assertEquals "%K{002} %F{000} master %k%F{002}%f " "$(build_left_prompt)"
 }
 
@@ -401,6 +457,9 @@ function testDetectingUntrackedFilesInSubmodulesWork() {
 
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
+
   assertEquals "%K{002} %F{000} master ? %k%F{002}%f " "$(build_left_prompt)"
 }
 
@@ -426,6 +485,9 @@ function testDetectinUntrackedFilesInMainRepoWithDirtySubmodulesWork() {
   touch "i-am-untracked.txt"
 
   source ${P9K_HOME}/powerlevel9k.zsh-theme
+
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
 
   assertEquals "%K{002} %F{000} master ? %k%F{002}%f " "$(build_left_prompt)"
 }
@@ -470,6 +532,9 @@ function testDetectingUntrackedFilesInNestedSubmodulesWork() {
 
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
+
   assertEquals "%K{002} %F{000} master ? %k%F{002}%f " "$(build_left_prompt)"
 }
 
@@ -487,6 +552,8 @@ function testDetectingUntrackedFilesInCleanSubdirectoryWorks() {
    touch dirty-folder/new-file.txt
   cd clean-folder
    source ${P9K_HOME}/powerlevel9k.zsh-theme
+   prompt_vcs_async_request
+   prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
    assertEquals "%K{002} %F{000} master ? %k%F{002}%f " "$(build_left_prompt)"
 }
 
@@ -499,6 +566,9 @@ function testBranchNameScriptingVulnerability() {
   git checkout -b '$(./evil_script.sh)' 2>/dev/null
   git add . 2>/dev/null
   git commit -m "Initial commit" >/dev/null
+
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
 
   assertEquals '%K{002} %F{000} $(./evil_script.sh) %k%F{002}%f ' "$(build_left_prompt)"
 }
@@ -524,6 +594,9 @@ function testGitSubmoduleWorks() {
   cd submodule
 
   source "${P9K_HOME}/powerlevel9k.zsh-theme"
+
+  prompt_vcs_async_request
+  prompt_vcs_async_response $_PROMPT_VCS_ASYNC_FD
 
   local result="$(build_left_prompt)"
   [[ "$result" =~ ".*(is outside repository)+" ]] && return 1
