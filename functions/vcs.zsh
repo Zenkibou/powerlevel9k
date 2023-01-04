@@ -151,7 +151,7 @@ function +vi-vcs-detect-changes() {
 }
 
 function +vi-svn-detect-changes() {
-  local svn_status="$(svn status)"
+  local svn_status="$(svn status 2>/dev/null)"
   if [[ -n "$(echo "$svn_status" | \grep \^\?)" ]]; then
     hook_com[unstaged]+=" $(print_icon 'VCS_UNTRACKED_ICON')"
     VCS_WORKDIR_HALF_DIRTY=true
